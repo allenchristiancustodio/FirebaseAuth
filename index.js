@@ -3,7 +3,10 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebas
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-analytics.js";
 import { getAuth,
         signInWithEmailAndPassword,
-        createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js';
+        createUserWithEmailAndPassword,
+        signOut ,
+        onAuthStateChanged} 
+        from 'https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js';
 /* === Firebase Setup === */
 
 const firebaseConfig = {
@@ -33,14 +36,17 @@ const passwordInputEl = document.getElementById("password-input")
 const signInButtonEl = document.getElementById("sign-in-btn")
 const createAccountButtonEl = document.getElementById("create-account-btn")
 
+const signOutButtonEl = document.getElementById("sign-out-btn")
+
 /* == UI - Event Listeners == */
 signInWithGoogleButtonEl.addEventListener("click", authSignInWithGoogle)
 
 signInButtonEl.addEventListener("click", authSignInWithEmail)
 createAccountButtonEl.addEventListener("click", authCreateAccountWithEmail)
-
+signOutButtonEl.addEventListener("click", authSignOut)
 /* === Main Code === */
-showLoggedOutView()
+    
+checkUserState();
 
 /* === Functions === */
 
@@ -57,7 +63,7 @@ function authSignInWithEmail() {
     signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
         // Signed in 
-        showLoggedInView();
+        clearAuthFields();
         })
         .catch((error) => {
             console.error(error.message)
@@ -71,11 +77,36 @@ function authCreateAccountWithEmail() {
     createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
         // Signed up 
-        showLoggedInView();
+        clearAuthFields();
         })
         .catch((error) => {
             console.error(error.message)    
         });
+}
+
+function authSignOut() {
+    signOut(auth).then(() => {
+        showLoggedOutView()
+      }).catch((error) => {
+        alert('error on signed out')
+      });
+}
+
+function checkUserState(){
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            showLoggedInView();
+          // User is signed in, see docs for a list of available properties
+          // https://firebase.google.com/docs/reference/js/auth.user
+          console.log(user)
+          const uid = user.uid;
+          // ...
+        } else {
+            showLoggedOutView();
+          // User is signed out
+          // ...
+        }
+      });
 }
 /* == Functions - UI Functions == */
 
@@ -95,4 +126,9 @@ function showElement(element) {
 
 function hideElement(element) {
     element.style.display = "none"
+}
+
+function clearAuthFields() {
+	clearInputField(emailInputEl)
+	clearInputField(passwordInputEl)
 }

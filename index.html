@@ -15,6 +15,7 @@
             <div class="left-section">
                 <h1>Welcome to Our Platform</h1>
                 <p>Join us and explore amazing features</p>
+                <button id="create-account-btn" class="login-btn facebook">Create Account</button>
             </div>
             <div class="right-section">
                 <div class="login-container">
@@ -25,7 +26,6 @@
                         <input id="password-input" type="password" placeholder="Password" class="input-field" required>
                         <button id="sign-in-btn" type="submit" class="login-btn email">Sign in</button>
                     <p>or</p>
-                    <button id="create-account-btn" class="login-btn email">Create Account</button>
                     <button id="sign-in-with-google-btn" class="login-btn google">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/768px-Google_%22G%22_logo.svg.png" alt="Google Logo" class="btn-icon">
                         Sign in with Google
@@ -41,6 +41,11 @@
 
     <section id="logged-in-view">
         <div class="container">
+            <nav>
+                <button id="sign-out-btn" class="icon-btn">
+                    <img src="assets/icon-sign-out.svg" class="icon-img-btn">
+                </button>
+            </nav>
             <img src="assets/login.gif">
         </div>
     </section>
